@@ -1,0 +1,28 @@
+﻿Testing new API key with gemini-1.5-flash...
+
+node : ??Error: [GoogleGener
+ativeAI Error]: Error fetchi
+ng from https://generativela
+nguage.googleapis.com/v1beta
+/models/gemini-1.5-flash:gen
+erateContent: [404 Not Found
+] models/gemini-1.5-flash is
+ not found for API version v
+1beta, or is not supported f
+or generateContent. Call Lis
+tModels to see the list of a
+vailable models and their su
+pported methods.
+위치 줄:1 문자:1
++ node test-new-key.mjs 2>&1
+ | Out-File -FilePath test-n
+ew-key-output.t ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          
+    : NotSpecified: (??Err  
+  or: [Googl...ported met   
+ hods.:String) [], Remot    
+eException
+    + FullyQualifiedErrorId 
+    : NativeCommandError
+ 

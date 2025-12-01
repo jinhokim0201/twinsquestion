@@ -3,6 +3,7 @@ import FileUpload from './components/FileUpload';
 import ProblemAnalysis from './components/ProblemAnalysis';
 import SimilarProblems from './components/SimilarProblems';
 import ProblemBank from './components/ProblemBank';
+import ExamPaper from './components/ExamPaper';
 import { extractTextFromImage } from './services/ocrService';
 import { analyzeProblem, generateSimilarProblems } from './services/aiService';
 import { saveProblem } from './services/storageService';
@@ -15,6 +16,7 @@ function App() {
   const [originalText, setOriginalText] = useState('');
   const [generatedProblems, setGeneratedProblems] = useState([]);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showExamView, setShowExamView] = useState(false);
 
   const handleFileSelect = async (file) => {
     setSelectedFile(file);
@@ -135,7 +137,17 @@ function App() {
               problems={generatedProblems}
               onSaveProblem={handleSaveProblem}
               onGenerateMore={handleGenerateMore}
+              onViewExam={() => setShowExamView(true)}
             />
+
+            {/* 시험지 뷰 */}
+            {showExamView && (
+              <ExamPaper
+                problems={generatedProblems}
+                analysisResult={analysisResult}
+                onClose={() => setShowExamView(false)}
+              />
+            )}
           </div>
         ) : (
           <ProblemBank />

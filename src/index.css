@@ -45,16 +45,31 @@ body {
 }
 
 /* Typography Utilities */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.2;
   color: var(--text-main);
 }
 
-h1 { font-size: 2.5rem; letter-spacing: -0.02em; }
-h2 { font-size: 2rem; letter-spacing: -0.01em; }
-h3 { font-size: 1.5rem; }
+h1 {
+  font-size: 2.5rem;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-size: 2rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
 
 p {
   color: var(--text-muted);
@@ -147,7 +162,9 @@ p {
 }
 
 /* Form Elements */
-input, select, textarea {
+input,
+select,
+textarea {
   background: var(--background-dark);
   border: 1px solid var(--border-color);
   color: var(--text-main);
@@ -158,7 +175,9 @@ input, select, textarea {
   transition: border-color 0.2s ease;
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--primary-color);
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
@@ -166,8 +185,15 @@ input:focus, select:focus, textarea:focus {
 
 /* Animations */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .animate-fade-in {
@@ -184,7 +210,9 @@ input:focus, select:focus, textarea:focus {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Utilities */
@@ -213,10 +241,119 @@ input:focus, select:focus, textarea:focus {
   .grid-cols-2 {
     grid-template-columns: 1fr;
   }
-  
+
   .container {
     padding: 1rem;
   }
-  
-  h1 { font-size: 2rem; }
+
+  h1 {
+    font-size: 2rem;
+  }
+}
+
+/* ========================================
+   시험지 레이아웃 스타일
+   ======================================== */
+
+/* 시험지 전체 컨테이너 */
+.exam-paper {
+  background: white;
+  color: black;
+  padding: 3rem;
+  min-height: 297mm;
+  /* A4 세로 길이 */
+  max-width: 210mm;
+  /* A4 가로 길이 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Malgun Gothic', sans-serif;
+  line-height: 1.8;
+}
+
+/* 시험지 헤더 */
+.exam-header h1 {
+  color: black;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 시험지 본문 */
+.exam-content {
+  margin-top: 2rem;
+}
+
+/* 문제 스타일 */
+.exam-problem {
+  page-break-inside: avoid;
+  /* 문제가 페이지 중간에 잘리지 않도록 */
+  margin-bottom: 2.5rem;
+}
+
+.exam-problem h3 {
+  color: black;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* 페이지 번호 */
+.exam-footer {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+/* ========================================
+   인쇄 최적화
+   ======================================== */
+
+@media print {
+
+  /* 페이지 설정 */
+  @page {
+    size: A4 portrait;
+    margin: 20mm 15mm;
+  }
+
+  /* 기본 요소 숨기기 */
+  body * {
+    visibility: hidden;
+  }
+
+  /* 시험지만 표시 */
+  .exam-paper,
+  .exam-paper * {
+    visibility: visible;
+  }
+
+  .exam-paper {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    max-width: none;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  /* 컨트롤 버튼 숨기기 */
+  .print\\:hidden {
+    display: none !important;
+  }
+
+  /* 배경색/이미지 인쇄 */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  /* 페이지 나누기 최적화 */
+  .exam-problem {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  /* 정답 영역 배경색 인쇄 */
+  .exam-problem>div {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }

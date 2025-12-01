@@ -19,8 +19,8 @@ const ProblemCard = ({ problem, index, onSave }) => {
                     onClick={handleSave}
                     disabled={isSaved}
                     className={`text-sm px-3 py-1 rounded transition-colors ${isSaved
-                            ? 'bg-green-500/20 text-green-400 cursor-default'
-                            : 'bg-slate-700 hover:bg-slate-600 text-slate-300'
+                        ? 'bg-green-500/20 text-green-400 cursor-default'
+                        : 'bg-slate-700 hover:bg-slate-600 text-slate-300'
                         }`}
                 >
                     {isSaved ? '저장됨' : '문제은행에 저장'}
@@ -70,7 +70,7 @@ const ProblemCard = ({ problem, index, onSave }) => {
     );
 };
 
-const SimilarProblems = ({ problems, onSaveProblem, onGenerateMore }) => {
+const SimilarProblems = ({ problems, onSaveProblem, onGenerateMore, onViewExam }) => {
     if (!problems || problems.length === 0) return null;
 
     return (
@@ -89,6 +89,12 @@ const SimilarProblems = ({ problems, onSaveProblem, onGenerateMore }) => {
                         className="btn btn-secondary text-sm py-2"
                     >
                         유사 문제 더 만들기
+                    </button>
+                    <button
+                        onClick={onViewExam}
+                        className="btn btn-primary text-sm py-2"
+                    >
+                        📄 시험지 형식으로 보기
                     </button>
                 </div>
             </div>

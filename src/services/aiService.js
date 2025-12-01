@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = 'AIzaSyChwMPKEqY521i1QmOGB2hqbZWyB0K_RRs';
+const API_KEY = 'AIzaSyDfQcDbQOhKHsajiLIB1aiSHjXNV9jbHDk';
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 // JSON 응답을 파싱하기 위한 헬퍼 함수
@@ -23,8 +23,8 @@ const parseJSON = (text) => {
 export const analyzeProblem = async (text) => {
   if (!API_KEY) throw new Error("Gemini API Key가 설정되지 않았습니다.");
 
-  // 모델 초기화 (gemini-2.5-flash 사용)
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  // 모델 초기화 (gemini-1.5-flash 사용)
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const prompt = `
     다음 수학 문제 텍스트를 분석하여 과목, 대주제, 소주제, 문제 유형, 난이도를 JSON 형식으로 추출해줘.
@@ -64,7 +64,7 @@ export const analyzeProblem = async (text) => {
 export const generateSimilarProblems = async (analysis, originalText, count = 1, mode = 'twin') => {
   if (!API_KEY) throw new Error("Gemini API Key가 설정되지 않았습니다.");
 
-  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
   const modeDescription = mode === 'twin'
     ? "쌍둥이 문제: 원본 문제와 논리 구조, 풀이 방식이 완전히 동일하고 숫자나 변수만 바뀐 문제"
