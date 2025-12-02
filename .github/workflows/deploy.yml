@@ -21,6 +21,16 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
+    - name: Check Env
+      run: |
+        if [ -z "${VITE_GEMINI_API_KEY}" ]; then
+          echo "Error: VITE_GEMINI_API_KEY is NOT set"
+        else
+          echo "Success: VITE_GEMINI_API_KEY is set (length: ${#VITE_GEMINI_API_KEY})"
+        fi
+      env:
+        VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+
     - name: Build
       run: npm run build
       env:
