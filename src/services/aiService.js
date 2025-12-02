@@ -3,6 +3,9 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 // 환경 변수에서 API 키 가져오기
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+console.log('DEBUG: API Key present?', !!API_KEY);
+console.log('DEBUG: API Key length:', API_KEY ? API_KEY.length : 0);
+
 if (!API_KEY) {
   console.error("❌ VITE_GEMINI_API_KEY가 설정되지 않았습니다. .env 파일을 확인하세요.");
 }
