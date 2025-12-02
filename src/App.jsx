@@ -90,7 +90,7 @@ function App() {
           <h1 className="text-3xl font-bold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
             유사 쌍둥이 문제 생성기
           </h1>
-          <p className="text-slate-400 mt-1">AI로 기출문제 분석하고 쌍둥이 문제 만들기</p>
+          <p className="text-slate-400 mt-1">AI로 기출문제 분석하고 쌍둥이 문제 만들기 <span className="text-xs text-slate-600 ml-2">v1.1 (Deploy Fix)</span></p>
         </div>
 
         <nav className="flex space-x-1 bg-slate-800 p-1 rounded-lg">
