@@ -43,8 +43,9 @@ function App() {
       setAnalysisResult(analysis);
 
       // 3. Generate Twin Problem (Initial)
-      const problems = await generateSimilarProblems(analysis, text, 1, 'twin');
+      const problems = await generateSimilarProblems(analysis, text, 20, 'twin');
       setGeneratedProblems(problems);
+      setShowExamView(true);
 
     } catch (error) {
       console.error('Error:', error);

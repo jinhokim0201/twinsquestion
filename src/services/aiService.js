@@ -1,7 +1,13 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const API_KEY = 'AIzaSyDfQcDbQOhKHsajiLIB1aiSHjXNV9jbHDk';
-const genAI = new GoogleGenerativeAI(API_KEY);
+// 환경 변수에서 API 키 가져오기
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+
+if (!API_KEY) {
+  console.error("❌ VITE_GEMINI_API_KEY가 설정되지 않았습니다. .env 파일을 확인하세요.");
+}
+
+const genAI = API_KEY ? new GoogleGenerativeAI(API_KEY) : null;
 
 // JSON 응답을 파싱하기 위한 헬퍼 함수
 const parseJSON = (text) => {
@@ -21,10 +27,12 @@ const parseJSON = (text) => {
  * @returns {Promise<Object>} 분석 결과 { subject, topic, type, difficulty }
  */
 export const analyzeProblem = async (text) => {
-  if (!API_KEY) throw new Error("Gemini API Key가 설정되지 않았습니다.");
+  if (!API_KEY || !genAI) {
+    throw new Error("Gemini API Key가 설정되지 않았습니다. .env 파일을 확인하세요.");
+  }
 
-  // 모델 초기화 (gemini-1.5-flash 사용)
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  // 모델 초기화 (gemini-2.0-flash 사용)
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const prompt = `
     다음 수학 문제 텍스트를 분석하여 과목, 대주제, 소주제, 문제 유형, 난이도를 JSON 형식으로 추출해줘.
@@ -48,8 +56,20 @@ export const analyzeProblem = async (text) => {
     const response = await result.response;
     return parseJSON(response.text());
   } catch (error) {
-    console.error("AI Analysis Error:", error);
-    throw new Error("문제 분석 중 오류가 발생했습니다.");
+    console.error("❌ AI Analysis Error:", error);
+
+    // 더 자세한 에러 정보 제공
+    if (error.message?.includes('API_KEY_INVALID')) {
+      throw new Error("API 키가 유효하지 않습니다. Google AI Studio에서 키를 확인하세요.");
+    } else if (error.message?.includes('QUOTA_EXCEEDED')) {
+      throw new Error("API 사용량 한도를 초과했습니다. 잠시 후 다시 시도하세요.");
+    } else if (error.status === 429) {
+      throw new Error("요청이 너무 많습니다. 잠시 후 다시 시도하세요.");
+    } else if (error.status === 403) {
+      throw new Error("API 접근 권한이 없습니다. API 키 설정을 확인하세요.");
+    }
+
+    throw new Error(`문제 분석 중 오류가 발생했습니다: ${error.message || '알 수 없는 오류'}`);
   }
 };
 
@@ -62,9 +82,11 @@ export const analyzeProblem = async (text) => {
  * @returns {Promise<Array>} 생성된 문제 목록
  */
 export const generateSimilarProblems = async (analysis, originalText, count = 1, mode = 'twin') => {
-  if (!API_KEY) throw new Error("Gemini API Key가 설정되지 않았습니다.");
+  if (!API_KEY || !genAI) {
+    throw new Error("Gemini API Key가 설정되지 않았습니다. .env 파일을 확인하세요.");
+  }
 
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
   const modeDescription = mode === 'twin'
     ? "쌍둥이 문제: 원본 문제와 논리 구조, 풀이 방식이 완전히 동일하고 숫자나 변수만 바뀐 문제"
@@ -96,7 +118,19 @@ export const generateSimilarProblems = async (analysis, originalText, count = 1,
     const response = await result.response;
     return parseJSON(response.text());
   } catch (error) {
-    console.error("AI Generation Error:", error);
-    throw new Error("유사 문제 생성 중 오류가 발생했습니다.");
+    console.error("❌ AI Generation Error:", error);
+
+    // 더 자세한 에러 정보 제공
+    if (error.message?.includes('API_KEY_INVALID')) {
+      throw new Error("API 키가 유효하지 않습니다. Google AI Studio에서 키를 확인하세요.");
+    } else if (error.message?.includes('QUOTA_EXCEEDED')) {
+      throw new Error("API 사용량 한도를 초과했습니다. 잠시 후 다시 시도하세요.");
+    } else if (error.status === 429) {
+      throw new Error("요청이 너무 많습니다. 잠시 후 다시 시도하세요.");
+    } else if (error.status === 403) {
+      throw new Error("API 접근 권한이 없습니다. API 키 설정을 확인하세요.");
+    }
+
+    throw new Error(`유사 문제 생성 중 오류가 발생했습니다: ${error.message || '알 수 없는 오류'}`);
   }
 };
